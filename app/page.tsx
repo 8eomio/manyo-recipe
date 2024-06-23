@@ -1,79 +1,34 @@
-"use client";
-import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
-import { useState } from "react";
-
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
+'use client';
+import { Input } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Home() {
-  const [showFilterInput, setShowFilterInput] = useState(true);
+  const [filterId, setFilterId] = useState('');
+  const router = useRouter();
+
+  const handleLogin = () => {
+    localStorage.setItem('filterId', filterId);
+    router.push('/Refri');
+  };
+
   return (
-    /*<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-lg text-center justify-center">
-        <h1 className={title()}>Make&nbsp;</h1>
-        <h1 className={title({ color: "violet" })}>beautiful&nbsp;</h1>
-        <br />
-        <h1 className={title()}>
-          websites regardless of your design experience.
-        </h1>
-        <h2 className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
-        </h2>
-      </div>
-
-      <div className="flex gap-3">
-        <Link
-          isExternal
-          className={buttonStyles({
-            color: "primary",
-            radius: "full",
-            variant: "shadow",
-          })}
-          href={siteConfig.links.docs}
-        >
-          Documentation
-        </Link>
-        <Link
-          isExternal
-          className={buttonStyles({ variant: "bordered", radius: "full" })}
-          href={siteConfig.links.github}
-        >
-          <GithubIcon size={20} />
-          GitHub
-        </Link>
-      </div>
-
-      <div className="mt-8">
-        <Snippet hideCopyButton hideSymbol variant="flat">
-          <span>
-            Get started by editing <Code color="primary">app/page.tsx</Code>
-          </span>
-        </Snippet>
-      </div>
-    </section>
-    */
-    <div>
-      <h1>refrigpt</h1>
-      {showFilterInput && (
-                <div className="mt-4">
-                    <Input 
-                        type="text" 
-                        label="Filter by ID" 
-                        value={filterId}
-                        onChange={(e) => setFilterId(e.target.value)} 
-                        onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                                setShowFilterInput(false);
-                            }
-                        }}
-                        fullWidth
-                    />
-                </div>
-            )}
+    <div className="flex items-center justify-center flex-col gap-4">
+      <h1 className="font-bold text-4xl">로그인</h1>
+      <Input
+        type="text"
+        label="Filter by ID"
+        value={filterId}
+        className="w-96"
+        onChange={(e) => setFilterId(e.target.value)}
+      />
+      <button
+        className="w-96 p-4 bg-blue-600 rounded-lg text-white font-bold"
+        onClick={handleLogin}
+        type="button"
+      >
+        로그인
+      </button>
     </div>
   );
 }
