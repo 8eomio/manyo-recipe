@@ -8,6 +8,11 @@ export default function Home() {
   const router = useRouter();
 
   const handleLogin = () => {
+    if (!filterId) {
+      alert('Filter ID를 입력해주세요.');
+      return;
+    }
+
     localStorage.setItem('filterId', filterId);
     router.push('/Refri');
   };
@@ -21,6 +26,11 @@ export default function Home() {
         value={filterId}
         className="w-96"
         onChange={(e) => setFilterId(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleLogin();
+          }
+        }}
       />
       <button
         className="w-96 p-4 bg-blue-600 rounded-lg text-white font-bold"

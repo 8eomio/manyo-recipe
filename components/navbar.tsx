@@ -1,3 +1,4 @@
+'use client';
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -6,17 +7,17 @@ import {
   NavbarBrand,
   NavbarItem,
   NavbarMenuItem,
-} from "@nextui-org/navbar";
-import { Button } from "@nextui-org/button";
-import { Kbd } from "@nextui-org/kbd";
-import { Link } from "@nextui-org/link";
-import { Input } from "@nextui-org/input";
-import { link as linkStyles } from "@nextui-org/theme";
-import NextLink from "next/link";
-import clsx from "clsx";
+} from '@nextui-org/navbar';
+import { Button } from '@nextui-org/button';
+import { Kbd } from '@nextui-org/kbd';
+import { Link } from '@nextui-org/link';
+import { Input } from '@nextui-org/input';
+import { link as linkStyles } from '@nextui-org/theme';
+import NextLink from 'next/link';
+import clsx from 'clsx';
 
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
+import { siteConfig } from '@/config/site';
+import { ThemeSwitch } from '@/components/theme-switch';
 import {
   TwitterIcon,
   GithubIcon,
@@ -24,18 +25,21 @@ import {
   HeartFilledIcon,
   SearchIcon,
   Logo,
-} from "@/components/icons";
+} from '@/components/icons';
+import { usePathname } from 'next/navigation';
 
 export const Navbar = () => {
+  const pathname = usePathname();
+
   const searchInput = (
     <Input
       aria-label="Search"
       classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
+        inputWrapper: 'bg-default-100',
+        input: 'text-sm',
       }}
       endContent={
-        <Kbd className="hidden lg:inline-block" keys={["command"]}>
+        <Kbd className="hidden lg:inline-block" keys={['command']}>
           K
         </Kbd>
       }
@@ -48,7 +52,7 @@ export const Navbar = () => {
     />
   );
 
-  return (
+  return pathname !== '/' ? (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
@@ -62,8 +66,8 @@ export const Navbar = () => {
             <NavbarItem key={item.href}>
               <NextLink
                 className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                  linkStyles({ color: 'foreground' }),
+                  'data-[active=true]:text-primary data-[active=true]:font-medium'
                 )}
                 color="foreground"
                 href={item.href}
@@ -122,10 +126,10 @@ export const Navbar = () => {
               <Link
                 color={
                   index === 2
-                    ? "primary"
+                    ? 'primary'
                     : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
+                    ? 'danger'
+                    : 'foreground'
                 }
                 href="#"
                 size="lg"
@@ -137,5 +141,5 @@ export const Navbar = () => {
         </div>
       </NavbarMenu>
     </NextUINavbar>
-  );
+  ) : null;
 };
