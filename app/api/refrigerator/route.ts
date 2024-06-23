@@ -12,8 +12,9 @@ export async function GET(request: NextRequest) {
   }
 
 export async function POST(request: NextRequest) {
-    const { ingredient } = await request.json();
-    const addedIngredients = await addIngredients({ingredient});
+    const { ingredient, userid } = await request.json();
+    console.log("test post", userid);
+    const addedIngredients = await addIngredients({ingredient, userid});
     const response = {
         message: "성공",
         data: addedIngredients

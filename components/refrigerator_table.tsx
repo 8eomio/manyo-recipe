@@ -15,7 +15,7 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
     const [showFilterInput, setShowFilterInput] = useState(true);
     const router = useRouter();
 
-    const addRefriHandler = async (ingredient: string) => {
+    const addRefriHandler = async (ingredient: string, userid:string) => {
         if (NewRefriInput.length < 1) {
             console.log("글자를 입력하세요");
             return;
@@ -23,7 +23,8 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
         await fetch("http://localhost:3000/api/refrigerator/", {
             method: "POST",
             body: JSON.stringify({
-                "ingredient": ingredient
+                ingredient,
+                userid,
             }),
             cache: 'no-store',
             headers: {
@@ -77,6 +78,7 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
                             if (e.key === 'Enter') {
                                 setShowFilterInput(false);
                             }
+                            
                         }}
                         fullWidth
                     />
@@ -112,7 +114,8 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
                 {RefriAddEnable ?
                     <Button color="warning" className="h-14"
                         onPress={async () => {
-                            await addRefriHandler(NewRefriInput);
+                            console.log("filter id teestttttt", filterId);
+                            await addRefriHandler(NewRefriInput, filterId);
                             setNewRefriInput('');
                             setSuggestions([]);
                         }}>
