@@ -43,14 +43,16 @@ export async function fetchIngredients() {
     });
     return fetchedIngredients;
 } 
-export async function addIngredients({ ingredient }) {
+export async function addIngredients({ ingredient, userid}) {
     const newIngredientRef = doc(collection(db, "Refrigerator"));
     const createdTimestamp = Timestamp.fromDate(new Date())
     const newIngredientData = {
     id: newIngredientRef.id,
     ingredient : ingredient,
-    exp_date: createdTimestamp
+    exp_date: createdTimestamp,
+    usrid: userid
     };
+    console.log("test apiiiiiiiiii", newIngredientData);
     await setDoc(newIngredientRef, newIngredientData);
     return newIngredientData;
 }
