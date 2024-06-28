@@ -7,11 +7,6 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: NextRequest) {
-    if (req.method !== 'POST') {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-        return;
-    }
 
     try {
         const { model, messages, temperature, max_tokens } = req.body;
