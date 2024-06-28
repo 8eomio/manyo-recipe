@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "next",
 		"build": "next build",
-		"start": "next start"
+		"start": "next start",
+		"vercel-deploy": "next build && next export"
   	},
 	"devDependencies": {
     	"gh-pages": "^3.2.3"
