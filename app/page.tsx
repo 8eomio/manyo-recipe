@@ -14,7 +14,7 @@ export default function Home() {
     }
 
     localStorage.setItem('filterId', filterId);
-    router.push('/Refri');
+    router.push('/Home');
   };
 
   return (
@@ -22,7 +22,7 @@ export default function Home() {
       <h1 className="font-bold text-4xl">로그인</h1>
       <Input
         type="text"
-        label="Filter by ID"
+        label="ID를 입력하세요"
         value={filterId}
         className="w-96"
         onChange={(e) => setFilterId(e.target.value)}

@@ -1,3 +1,4 @@
+
 // app/recipes/page.tsx
 import { title } from "@/components/primitives";
 import RecipeTable from "@/components/recipe_table";
@@ -32,3 +33,4 @@ export default async function RecipePage() {
         </div>
     );
 }
+

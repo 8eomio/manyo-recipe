@@ -119,7 +119,6 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
             color="warning"
             className="h-14"
             onPress={async () => {
-              console.log('filter id teestttttt', filterId);
               await addRefriHandler(NewRefriInput, filterId);
               setNewRefriInput('');
               setSuggestions([]);

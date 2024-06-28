@@ -4,6 +4,7 @@ import axios from 'axios';
 import styles from '../styles/Chat.module.css';
 import OpenAI from 'openai';
 
+const openai = new OpenAI({ apiKey: 'your-openai-api-key', dangerouslyAllowBrowser: true });
 
 interface ChatLog {
     type: 'user' | 'bot';
@@ -19,6 +20,19 @@ interface Recommendation {
     ingredients?: string[];
 }
 
+interface RefriItem {
+    id: string;
+    usrid: string;
+    ingredient: string;
+    exp_date: string;
+}
+
+async function fetchRefriApiCall() {
+  console.log("fetchRefriApiCall called");
+  const res = await fetch("http://localhost:3000/api/refrigerator", { cache: "no-store" });
+  return res.json();
+}
+
 const Chat = () => {
     const [userMsg, setUserMsg] = useState<string>("");
     const [chatLog, setChatLog] = useState<ChatLog[]>([]);
@@ -32,6 +46,23 @@ const Chat = () => {
     const [showBackOptions, setShowBackOptions] = useState<boolean>(false);
     const [showIngredientsSelection, setShowIngredientsSelection] = useState<boolean>(false);
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+    const [ingredients, setIngredients] = useState<RefriItem[]>([]);
+    const [filterId, setFilterId] = useState('');
+
+    useEffect(() => {
+        const fetchIngredients = async () => {
+            const response = await fetchRefriApiCall();
+            setIngredients(response.data ?? []);
+        };
+        fetchIngredients();
+    }, []);
+
+    useEffect(() => {
+        const storedFilterId = localStorage.getItem('filterId');
+        if (storedFilterId) {
+            setFilterId(storedFilterId);
+        }
+    }, []);
 
     useEffect(() => {
         console.log("Current step:", step);
@@ -85,7 +116,6 @@ const Chat = () => {
                 ],
                 temperature: 1.0,
                 max_tokens: 1000,
-                type: "chatting",
             });
 
             console.log("API response:", response.data);
@@ -213,9 +243,7 @@ const Chat = () => {
                 ],
                 temperature: 1.0,
                 max_tokens: 1500,
-                type: "chatting",
             });
-
 
             console.log("API response:", response.data);
 
@@ -228,20 +256,17 @@ const Chat = () => {
                 if (cookingSteps) {
                     for (const step of cookingSteps) {
                         const translatedStep = await translateToEnglish(step);
-                        
+
                         console.log("Translated text:", translatedStep);
                         console.log("Generating image for step:", translatedStep);
-    
-                        const imageResponse = await axios.post("/api/chat",{
+                        const imageResponse = await openai.images.generate({
                             prompt: `Please make a photo of the cooking process for making ${message}. The cooking process is: ${translatedStep}.`,
                             n: 1,
                             size: "256x256",
-                            type: "chatting2",
-                            
                         });
 
                         console.log("Image response:", imageResponse.data);
-                        
+
                         if (imageResponse.data && imageResponse.data.length > 0) {
                             const imageUrl = imageResponse.data[0].url;
                             setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: step }]);
@@ -269,15 +294,13 @@ const Chat = () => {
 
     const translateToEnglish = async (text: string) => {
         try {
-            const response = await axios.post("/api/chat", {
+            const response = await openai.completions.create({
                 model: "gpt-3.5-turbo-instruct",
                 prompt: `Translate the following Korean text to English: ${text}`,
                 max_tokens: 100,
                 temperature: 0.5,
-                type : "translate",
             });
-            console.log("test responseeeeeeeee", response);
-            const translatedText = response.data;
+            const translatedText = response.choices[0].text.trim();
             console.log("Translated text:", translatedText);
             return translatedText;
         } catch (error) {
@@ -301,7 +324,6 @@ const Chat = () => {
                 ],
                 temperature: 1.0,
                 max_tokens: 300,
-                type:"chatting",
             });
 
             console.log("API response:", response.data);
@@ -454,13 +476,14 @@ const Chat = () => {
                     {showIngredientsSelection && (
                         <div>
                             <div>
-                                {['김치', '양파', '당근', '감자'].map((ingredient, index) => (
+                                {ingredients
+              .filter((ingredient) => ingredient.usrid.toString() === filterId).map((ingredient, index) => (
                                     <button
                                         key={index}
-                                        className={`${styles.button} ${selectedIngredients.includes(ingredient) ? styles.selected : ''}`}
-                                        onClick={() => handleIngredientClick(ingredient)}
+                                        className={`${styles.button} ${selectedIngredients.includes(ingredient.ingredient) ? styles.selected : ''}`}
+                                        onClick={() => handleIngredientClick(ingredient.ingredient)}
                                     >
-                                        {ingredient}
+                                        {ingredient.ingredient}
                                     </button>
                                 ))}
                             </div>

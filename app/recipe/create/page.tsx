@@ -15,7 +15,7 @@ export default function CreateRecipePage() {
         seasoning: '',
         optional_ingredients: '',
         author: '',
-        all_ingredients: '',
+        all_ingredients: [] '',
         cooking_steps: [],
         cooking_step_images: [],
         utensils: '',

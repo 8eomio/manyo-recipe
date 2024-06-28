@@ -15,7 +15,7 @@ export type refri = {
 export type recipe = {
   id: string;
   title: string;
-  required_ingredients: string;
+  required_ingredients: string[];
   difficulty: string;
   comments: string;
   dish_name: string;
@@ -23,9 +23,11 @@ export type recipe = {
   seasoning: string;
   optional_ingredients: string;
   author: string;
-  all_ingredients: string;
+  all_ingredients: string[];
   cooking_steps: string;
   cooking_step_images: string[];
   utensils: string;
   views: number;
+  userid: string;
+  main_img: string;
 }

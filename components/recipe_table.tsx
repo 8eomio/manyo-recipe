@@ -1,173 +1,281 @@
-"use client"; // Ensure this is the very first line
-
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button } from "@nextui-org/react";
-import { useState } from "react";
-import { refri } from "@/types";
+"use client";
+import { useEffect, useState } from 'react';
+import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { predefinedSuggestions } from "./ingredients"; // 리스트를 import
+import { recipe } from "@/types";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock, faUser, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
 
-const RefriTable = ({ refris }: { refris: refri[] }) => {
-    const [RefriAddEnable, setRefriAddEnable] = useState(false);
-    const [NewRefriInput, setNewRefriInput] = useState('');
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
     const router = useRouter();
+    const [filterId, setFilterId] = useState('');
 
-    const addRefriHandler = async (ingredient: string) => {
-        if (NewRefriInput.length < 1) {
-            console.log("글자를 입력하세요");
-            return;
-        }
-        await fetch("http://localhost:3000/api/refrigerator/", {
-            method: "POST",
-            body: JSON.stringify({
-                "ingredient": ingredient
-            }),
-            cache: 'no-store',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        router.refresh();
-        console.log("재료 추가 완료!");
-    };
-
-    const deleteRefriHandler = async (id: string) => {
-        await fetch(`http://localhost:3000/api/refrigerator/${id}`, {
+    const deleteRecipeHandler = async (id: string) => {
+        await fetch(`http://localhost:3000/api/recipes/${id}`, {
             method: "DELETE",
             cache: 'no-store',
         });
         router.refresh();
-        console.log("재료 삭제 완료!");
+        console.log("레시피 삭제 완료!");
     };
 
-    const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
-    };
-
-    const handleUpload = async () => {
-        if (!selectedFile) return;
-
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        const res = await fetch("/api/upload", {
-            method: "POST",
-            body: formData,
-        });
-
-        const data = await res.json();
-        console.log(data);
-    };
-
-    const filterSuggestions = (query: string) => {
-        if (!query) {
-            setSuggestions([]);
-            return;
+    useEffect(() => {
+        const storedFilterId = localStorage.getItem('filterId');
+        if (storedFilterId) {
+            setFilterId(storedFilterId);
         }
-        const filtered = predefinedSuggestions.filter(suggestion =>
-            suggestion.toLowerCase().includes(query.toLowerCase())
-        );
-        setSuggestions(filtered);
-    };
+    }, []);
 
     return (
-        <>
-            <div className="flex flex-wrap w-full gap-4 md:flex-nowrap relative">
-                <div style={{ position: 'relative', width: '100%' }}>
-                    <Input 
-                        type="text" 
-                        label="재료 추가" 
-                        value={NewRefriInput}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setNewRefriInput(value);
-                            setRefriAddEnable(value.length > 0);
-                            filterSuggestions(value);
-                        }} 
-                        fullWidth
-                    />
-                    {suggestions.length > 0 && (
-                        <div style={suggestionsStyle}>
-                            {suggestions.map((suggestion, index) => (
-                                <div key={index} style={suggestionItemStyle} onClick={() => {
-                                    setNewRefriInput(suggestion);
-                                    setSuggestions([]);
-                                }}>
-                                    {suggestion}
-                                </div>
-                            ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', backgroundColor: '#000', color: '#fff', padding: '16px' }}>
+            {recipes && recipes.filter((recipe) => recipe.userid.toString() === filterId).map((recipe) => (
+                <div key={recipe.id} style={cardStyle}>
+                    <h2 style={titleStyle}>{recipe.title}</h2>
+                    {recipe.main_img && (
+                        <div style={imageContainerStyle}>
+                            <img
+                                src={recipe.main_img}
+                                alt={`Main image of ${recipe.dish_name}`}
+                                style={mainImageStyle}
+                                onError={(e) => {
+                                    e.currentTarget.src = 'https://via.placeholder.com/150';
+                                    e.currentTarget.alt = '이미지 로드 실패';
+                                }}
+                            />
                         </div>
                     )}
-                </div>
-                {RefriAddEnable ?
-                    <Button color="warning" className="h-14"
-                        onPress={async () => {
-                            await addRefriHandler(NewRefriInput);
-                            setNewRefriInput('');
-                            setSuggestions([]);
-                        }}>
-                        재료 추가
-                    </Button> :
-                    <Button color="default" className="h-14">
-                        재료 추가
-                    </Button>
-                }
-            </div>
-            <div className="flex justify-between mt-4">
-                <input type="file" onChange={handleFileChange} />
-                <Button onClick={handleUpload} className="bg-blue-500 text-white px-4 py-2 rounded">
-                    Upload Image for OCR
-                </Button>
-            </div>
-            <Table aria-label="Example table with dynamic content">
-                <TableHeader>
-                    <TableColumn>아이디</TableColumn>
-                    <TableColumn>재료</TableColumn>
-                    <TableColumn>유통기한</TableColumn>
-                    <TableColumn>삭제</TableColumn>
-                </TableHeader>
-                <TableBody>
-                    {refris && refris.map((refri) => (
-                        <TableRow key={refri.id}>
-                            <TableCell>{refri.id}</TableCell>
-                            <TableCell>{refri.ingredient}</TableCell>
-                            <TableCell>{refri.exp_date}</TableCell>
-                            <TableCell>
-                                <Button color="danger" onPress={async () => await deleteRefriHandler(refri.id)}>
-                                    삭제
-                                </Button>
-                            </TableCell>
-                        </TableRow>
+                    <div style={cardHeaderStyle}>
+                        <h3 style={dishNameStyle}>{recipe.dish_name}</h3>
+                        <div style={detailsContainerStyle}>
+                            <div style={detailItemStyle}>
+                                <FontAwesomeIcon icon={faUser} />
+                                <span style={detailTextStyle}>{recipe.author}</span>
+                            </div>
+                            <div style={detailItemStyle}>
+                                <FontAwesomeIcon icon={faClock} />
+                                <span style={detailTextStyle}>{recipe.time} 분</span>
+                            </div>
+                            <div style={detailItemStyle}>
+                                <FontAwesomeIcon icon={faTachometerAlt} />
+                                <span style={detailTextStyle}>{recipe.difficulty}</span>
+                            </div>
+                        </div>
+                        {Array.isArray(recipe.all_ingredients) && (
+                            <div style={ingredientsContainerStyle}>
+                                <strong style={{ marginBottom: '8px' }}>[재료]:</strong>
+                                {recipe.all_ingredients.map((ingredient, index) => {
+                                    const [name, quantity] = ingredient.split(' ', 2);
+                                    return (
+                                        <div key={index} style={ingredientStyle}>
+                                            <span style={ingredientNameStyle}>{name}</span>
+                                            <span style={ingredientSeparatorStyle}></span>
+                                            <span style={ingredientQuantityStyle}>{quantity}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                        {recipe.seasoning && (
+                            <div style={ingredientsContainerStyle}>
+                                <strong style={{ marginBottom: '8px' }}>[양념장]:</strong>
+                                <div style={ingredientStyle}>
+                                    <span style={ingredientQuantityStyle}>{recipe.seasoning}</span>
+                                </div>
+                            </div>
+                        )}
+                        {recipe.optional_ingredients && (
+                            <div style={ingredientsContainerStyle}>
+                                <strong style={{ marginBottom: '8px' }}>[없어도 되는 재료]:</strong>
+                                <div style={ingredientStyle}>
+                                    
+                                    <span style={ingredientQuantityStyle}>{recipe.optional_ingredients}</span>
+                                </div>
+                            </div>
+                        )}
+                        {recipe.utensils && (
+                            <div style={ingredientsContainerStyle}>
+                                <strong style={{ marginBottom: '8px' }}>[조리 도구]:</strong>
+                                <div style={ingredientStyle}>
+                                    
+                                    <span style={ingredientQuantityStyle}>{recipe.utensils}</span>
+                                </div>
+                            </div>
+                        )}
+                        {recipe.views && (
+                            <div style={ingredientsContainerStyle}>
+                                <strong style={{ marginBottom: '8px' }}>[조회수]:</strong>
+                                <div style={ingredientStyle}>
+                                   
+                                    <span style={ingredientQuantityStyle}>{recipe.views}</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    {recipe.cooking_steps.map((step, index) => (
+                        <div key={index} style={stepCardStyle}>
+                            <div style={stepStyle}>
+                                <strong>조리 과정 {index + 1}:</strong>
+                                <p>{step}</p>
+                            </div>
+                            <div style={imageContainerStyle}>
+                                {recipe.cooking_step_images[index] && (
+                                    <img
+                                        src={recipe.cooking_step_images[index]}
+                                        alt={`조리 과정 이미지 ${index + 1}`}
+                                        style={imageStyle}
+                                        onError={(e) => {
+                                            e.currentTarget.src = 'https://via.placeholder.com/150';
+                                            e.currentTarget.alt = '이미지 로드 실패';
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        </div>
                     ))}
-                </TableBody>
-            </Table>
-        </>
+                    <Button onClick={() => deleteRecipeHandler(recipe.id)} color="error">레시피 삭제</Button>
+                </div>
+            ))}
+        </div>
     );
 };
 
-const suggestionsStyle = {
-    position: 'absolute',
-    background: 'black',
-    border: '1px solid #ccc',
-    width: '100%',
-    maxHeight: '150px',
-    overflowY: 'auto',
-    zIndex: 10,
-    marginTop: '4px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    borderRadius: '4px'
+const cardStyle = {
+    padding: '16px',
+    border: '1px solid #333',
+    borderRadius: '8px',
+    background: '#111',
+    display: 'flex',
+    flexDirection: 'column',
+    color: '#fff',
+    marginBottom: '16px'
 };
 
-const suggestionItemStyle = {
+const titleStyle = {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: '2em',
+    marginBottom: '16px',
+};
+
+const cardHeaderStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderBottom: '1px solid #333',
+    paddingBottom: '8px',
+    marginBottom: '8px'
+};
+
+const dishNameStyle = {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: '1.5em',
+    marginTop: '16px'
+};
+
+const cardContentStyle = {
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr',
+    gap: '8px',
+};
+
+const rowStyle = {
+    display: 'contents',
+};
+
+const ingredientListStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: '8px',
+    textAlign: 'left',
+};
+
+const ingredientStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '4px',
+    padding: '4px',
+    borderBottom: '1px solid #444',
+};
+
+const ingredientNameStyle = {
+    flex: '1 1 auto',
+    textAlign: 'left',
+    whiteSpace: 'nowrap',
+};
+
+const ingredientSeparatorStyle = {
+    flex: '1 1 auto',
+    borderBottom: '1px dashed #fff',
+    margin: '0 8px',
+};
+
+const ingredientQuantityStyle = {
+    flex: '0 0 auto',
+    textAlign: 'right',
+    whiteSpace: 'nowrap',
+};
+
+const stepCardStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#222',
+    padding: '16px',
+    borderRadius: '8px',
+    marginTop: '16px',
+    gap: '8px'
+};
+
+const stepStyle = {
+    backgroundColor: '#333',
     padding: '8px',
-    cursor: 'pointer',
-    backgroundColor: 'black',
-    borderBottom: '1px solid #eee'
+    borderRadius: '8px'
 };
 
-const suggestionItemHoverStyle = {
-    backgroundColor: '#f9f9f9'
+const imageContainerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '8px'
 };
 
-export default RefriTable;
+const imageStyle = {
+    maxWidth: '100%',
+    height: 'auto',
+    borderRadius: '8px'
+};
+
+const mainImageStyle = {
+    maxWidth: '100%',
+    height: 'auto',
+    borderRadius: '8px',
+    marginTop: '8px'
+};
+
+const detailsContainerStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: '8px',
+    width: '100%',
+};
+
+const detailItemStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+};
+
+const detailTextStyle = {
+    marginLeft: '8px',
+};
+
+const ingredientsContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: '8px',
+    marginLeft: '0',
+    textAlign: 'left',
+    width: '100%',
+};
+
+export default RecipeTable;

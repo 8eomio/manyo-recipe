@@ -52,7 +52,6 @@ export async function addIngredients({ ingredient, userid}) {
     exp_date: createdTimestamp,
     usrid: userid
     };
-    console.log("test apiiiiiiiiii", newIngredientData);
     await setDoc(newIngredientRef, newIngredientData);
     return newIngredientData;
 }
@@ -70,7 +69,7 @@ export async function addRecipe(recipe) {
         양념장: recipe.seasoning,
         없어도되는재료: recipe.optional_ingredients,
         작성자명: recipe.author,
-        전체재료: recipe.all_ingredients,
+        전체재료: recipe.all_ingredients.join(","),
         조리과정: recipe.cooking_steps.join(","),
         조리이미지: recipe.cooking_step_images.join(","),
         조리도구: recipe.utensils,
@@ -124,7 +123,7 @@ export async function fetchRecipes() {
         const aRecipe = {
             id: doc.id,
             title: doc.data()["게시글"],
-            required_ingredients: doc.data()["꼭있어야하는재료"],
+            required_ingredients: doc.data()["꼭있어야하는재료"] ? doc.data()["꼭있어야하는재료"].split(',').map(step => step.trim()) : [],
             difficulty: doc.data()["난이도"],
             comments: doc.data()["댓글"],
             dish_name: doc.data()["메뉴명"],
@@ -132,11 +131,13 @@ export async function fetchRecipes() {
             seasoning: doc.data()["양념장"],
             optional_ingredients: doc.data()["없어도되는재료"],
             author: doc.data()["작성자명"],
-            all_ingredients: doc.data()["전체재료"],
+            all_ingredients: doc.data()["전체재료"] ? doc.data()["전체재료"].split(',').map(step => step.trim()) : [],
             cooking_steps: doc.data()["조리과정"] ? doc.data()["조리과정"].split(',').map(step => step.trim()) : [],
             cooking_step_images: doc.data()["조리이미지"] ? doc.data()["조리이미지"].split(',').map(url => url.trim()) : [],
             utensils: doc.data()["조리도구"],
             views: doc.data()["조회수"],
+            userid: doc.data()["userid"],
+            main_img: doc.data()["main_img"]
         };
         fetchedRecipes.push(aRecipe);
     });
@@ -156,7 +157,7 @@ export async function fetchARecipe(id) {
         const fetchedRecipe = {
             id: recipeDocSnap.id,
             title: recipeDocSnap.data()["title"],
-            required_ingredients: recipeDocSnap.data()["required_ingredients"],
+            required_ingredients: recipeDocSnap.data()["required_ingredients"] || [],
             difficulty: recipeDocSnap.data()["difficulty"],
             comments: recipeDocSnap.data()["comments"],
             dish_name: recipeDocSnap.data()["dish_name"],
@@ -164,11 +165,12 @@ export async function fetchARecipe(id) {
             seasoning: recipeDocSnap.data()["seasoning"],
             optional_ingredients: recipeDocSnap.data()["optional_ingredients"],
             author: recipeDocSnap.data()["author"],
-            all_ingredients: recipeDocSnap.data()["all_ingredients"],
+            all_ingredients: recipeDocSnap.data()["all_ingredients"]["cooking_step_image"] || [],
             cooking_steps: doc.data()["cooking_steps"] || [],
             cooking_step_images : recipeDocSnap.data()["cooking_step_image"] || [],
             utensils: recipeDocSnap.data()["utensils"],
             views: recipeDocSnap.data()["views"],
+            userid: recipeDocSnap.data()["userid"],
         };
         return fetchedRecipe;
     } else {
