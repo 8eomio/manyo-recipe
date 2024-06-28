@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const debug = process.env.NODE_ENV !== "production";
+const repository = "https://8eomio.github.io/refriGPT/";
 const nextConfig = {
     async headers() {
         return [

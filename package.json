@@ -2,12 +2,16 @@
 	"name": "next-app-template",
 	"version": "0.0.1",
 	"private": true,
+	"homepage": "https://8eomio.github.io/refriGPT/",
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build",
+		"build": "next build && next export", // export 추가
 		"start": "next start",
-		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
-	},
+		"lint": "next lint",
+		// deploy 추가
+		"deploy": "next build && next export && touch out/.nojekyll && git add -f out/ && git commit -m 'deploy to gh-pages' && git subtree push --prefix out origin gh-pages",
+  },
+	
 	"dependencies": {
 		"@nextui-org/button": "^2.0.32",
 		"@nextui-org/code": "^2.0.28",
@@ -44,6 +48,7 @@
 		"firebase": "^10.12.2",
 		"formidable": "^3.5.1",
 		"framer-motion": "^11.1.1",
+		"gh-pages": "^6.1.1",
 		"intl-messageformat": "^10.5.0",
 		"next": "14.2.3",
 		"next-connect": "^1.0.0",
