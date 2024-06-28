@@ -28,9 +28,7 @@ export default function Refri() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full p-2 pl-3 border-l border-r border-t-8 rounded bg-white"
           />
-          <button type="submit" className="absolute right-0 mr-3 transform translate-y-4"> {/* Adjusted icon position */}
-            <FontAwesomeIcon icon={faSearch} size="lg" />
-          </button>
+          
         </form>
       </div>
 
