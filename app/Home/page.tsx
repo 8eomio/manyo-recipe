@@ -9,7 +9,7 @@ export default function Refri() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     if (searchTerm) {
       localStorage.setItem('searchTerm', searchTerm);
