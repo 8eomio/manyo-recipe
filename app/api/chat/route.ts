@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-
+import { NextRequest, NextResponse } from "next/server";
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY // This is also the default, can be omitted
 });
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(request: NextRequest) {
     if (req.method !== 'POST') {
         res.setHeader('Allow', ['POST']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
