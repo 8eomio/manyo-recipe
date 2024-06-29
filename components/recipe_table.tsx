@@ -12,7 +12,7 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
     const [filterId, setFilterId] = useState('');
 
     const deleteRecipeHandler = async (id: string) => {
-        await fetch(`http://localhost:3000/api/recipes/${id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${id}`, {
             method: "DELETE",
             cache: 'no-store',
         });
