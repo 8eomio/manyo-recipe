@@ -19,6 +19,5 @@ export async function POST(request: NextRequest) {
         message: "성공",
         data: addedIngredients
     }
-    console.log(response)
     return Response.json(response, {status: 201});
   }
