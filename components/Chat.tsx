@@ -4,7 +4,7 @@ import axios from 'axios';
 import styles from '../styles/Chat.module.css';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY,dangerouslyAllowBrowser: true });
 
 interface ChatLog {
     type: 'user' | 'bot';
