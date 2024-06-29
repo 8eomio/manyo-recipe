@@ -52,7 +52,7 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
   };
 
   const deleteRefriHandler = async (id: string) => {
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}0/api/refrigerator/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/refrigerator/${id}`, {
       method: 'DELETE',
       cache: 'no-store',
     });
