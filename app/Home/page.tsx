@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export default function Refri() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Refri() {
             className="w-full p-2 pl-3 border-l border-r border-t-8 rounded bg-white"
           />
           <button type="submit" className="absolute right-0 mr-3 transform translate-y-4"> {/* Adjusted icon position */}
-            <FontAwesomeIcon icon={faSearch} size="lg" />
+            <FontAwesomeIcon icon={faSearch as IconProp} size="lg" />
           </button>
 
           
