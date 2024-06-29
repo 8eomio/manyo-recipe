@@ -29,7 +29,7 @@ interface RefriItem {
 
 async function fetchRefriApiCall() {
   console.log("fetchRefriApiCall called");
-  const res = await fetch("http://localhost:3000/api/refrigerator", { cache: "no-store" });
+  const res = await fetch("${process.env.NEXT_PUBLIC_BASE_URL}/api/refrigerator", { cache: "no-store" });
   return res.json();
 }
 

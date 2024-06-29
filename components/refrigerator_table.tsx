@@ -36,7 +36,7 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
       console.log('글자를 입력하세요');
       return;
     }
-    await fetch('http://localhost:3000/api/refrigerator/', {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/refrigerator/`, {
       method: 'POST',
       body: JSON.stringify({
         ingredient,
@@ -52,7 +52,7 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
   };
 
   const deleteRefriHandler = async (id: string) => {
-    await fetch(`http://localhost:3000/api/refrigerator/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}0/api/refrigerator/${id}`, {
       method: 'DELETE',
       cache: 'no-store',
     });
@@ -61,7 +61,7 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
   };
 
   const handleExecuteOcr = async () => {
-    const res = await fetch('http://localhost:3000/api/execute-ocr', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/execute-ocr`, {
       method: 'POST',
     });
 
