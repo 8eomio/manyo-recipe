@@ -59,7 +59,7 @@ export default function Refri() {
         </a>
       </div>
       <div className="col-span-2 mt-1 w-full max-w-md px-4"> {/* Changed mt-4 to mt-2 */}
-        <a href="/ask" className="flex justify-center w-full">
+        <a href="/asking" className="flex justify-center w-full">
           <Image src="/ask.png" alt="물어보기" width={0} height={0} sizes="50vw" className="w-full h-auto" />
         </a>
       </div>
