@@ -2,7 +2,7 @@
 import { Input } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
+import Image from 'next/image';
 export default function Home() {
   const [filterId, setFilterId] = useState('');
   const router = useRouter();
@@ -18,26 +18,30 @@ export default function Home() {
   };
 
   return (
-    <div className="flex items-center justify-center flex-col gap-4">
-      <h1 className="font-bold text-4xl">로그인</h1>
-      <Input
-        type="text"
-        label="ID를 입력하세요"
-        value={filterId}
-        className="w-96"
-        onChange={(e) => setFilterId(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            handleLogin();
-          }
-        }}
-      />
+    <div className="flex flex-col items-center justify-center h-screen bg-white">
+      <div className="w-72 mb-4">
+        <Image src={"/manyo-recipe-logo.png"} alt="Login Icon" layout="responsive" width={150} height={150} />
+      </div>
+      <div className="w-72 mb-4">
+        <Input
+          type="text"
+          label="ID를 입력하세요"
+          value={filterId}
+          onChange={(e) => setFilterId(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleLogin();
+            }
+          }}
+        />
+      </div>
       <button
-        className="w-96 p-4 bg-blue-600 rounded-lg text-white font-bold"
+        className="w-72 p-4 rounded-lg text-white font-bold"
+        style = {{ backgroundColor: '#a392b3'}}
         onClick={handleLogin}
         type="button"
       >
-        로그인
+        입장
       </button>
     </div>
   );
