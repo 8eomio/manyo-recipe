@@ -18,10 +18,10 @@ export async function POST(request: NextRequest) {
             max_tokens,
         });
 
-        res.status(200).json({ choices: response.choices });
+        return NextResponse.json({ choices: response.choices });
     } catch (error) {
         console.error("OpenAI API Error:", error);
-        res.status(500).json({ error: error.message });
+        return NextResponse.json({ error: error.message });
     }
 }
 
