@@ -3,12 +3,12 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, query, getDocs, doc, setDoc, getDoc, Timestamp, deleteDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const firebaseConfig = {
-  apiKey: "AIzaSyDLIML92O7EEU7azdSh-tG6EBmnpPTOYxk",
-  authDomain: "refrigpt.firebaseapp.com",
-  projectId: "refrigpt",
-  storageBucket: "refrigpt.appspot.com",
-  messagingSenderId: "1038466103916",
-  appId: "1:1038466103916:web:390323b2b1b8f38c72f649"
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID
 };
 
 // Initialize Firebase
