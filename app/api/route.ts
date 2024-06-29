@@ -29,6 +29,12 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(response, { status: 201 });
     } catch (error) {
         console.error("Error adding ingredients:", error);
-        return NextResponse.json({ message: "재료 추가 실패", error: error.message }, { status: 500 });
+
+        let errorMessage = "Unknown error";
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+
+        return NextResponse.json({ message: "재료 추가 실패", error: errorMessage }, { status: 500 });
     }
 }
