@@ -25,7 +25,7 @@ const FilteredRecipeTable = ({ recipes, searchTerm }: { recipes: recipe[], searc
     }, []);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', backgroundColor: '#000', color: '#fff', padding: '16px' }}>
+        <div style={containerStyle}>
             {recipes && recipes.filter((recipe) => recipe.dish_name.toLowerCase().includes(searchTerm.toLowerCase())).map((recipe) => (
                 <div key={recipe.id} style={cardStyle}>
                     <div style={cardHeaderStyle}>
@@ -40,7 +40,7 @@ const FilteredRecipeTable = ({ recipes, searchTerm }: { recipes: recipe[], searc
                         <div style={rowStyle}><strong>꼭 있어야 하는 재료:</strong> <span>{recipe.required_ingredients}</span></div>
                         <div style={rowStyle}><strong>양념장:</strong> <span>{recipe.seasoning}</span></div>
                         <div style={rowStyle}><strong>없어도 되는 재료:</strong> <span>{recipe.optional_ingredients}</span></div>
-                        <div style={rowStyle}><strong>전체 재료:</strong> <span>{recipe.all_ingredients}</span></div>
+                        <div style={rowStyle}><strong>전체 재료:</strong> <span>{recipe.all_ingredients.join(', ')}</span></div>
                         <div style={rowStyle}><strong>조리 도구:</strong> <span>{recipe.utensils}</span></div>
                         <div style={rowStyle}><strong>조회수:</strong> <span>{recipe.views}</span></div>
                     </div>
@@ -65,14 +65,23 @@ const FilteredRecipeTable = ({ recipes, searchTerm }: { recipes: recipe[], searc
                             </div>
                         </div>
                     ))}
-                    <Button onClick={() => deleteRecipeHandler(recipe.id)} color="error">레시피 삭제</Button>
+                    <Button onClick={() => deleteRecipeHandler(recipe.id)} color="warning">레시피 삭제</Button>
                 </div>
             ))}
         </div>
     );
 };
 
-const cardStyle = {
+const containerStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    backgroundColor: '#000',
+    color: '#fff',
+    padding: '16px'
+};
+
+const cardStyle: React.CSSProperties = {
     padding: '16px',
     border: '1px solid #333',
     borderRadius: '8px',
@@ -83,7 +92,7 @@ const cardStyle = {
     marginBottom: '16px'
 };
 
-const cardHeaderStyle = {
+const cardHeaderStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -92,23 +101,23 @@ const cardHeaderStyle = {
     marginBottom: '8px'
 };
 
-const dishNameStyle = {
-    textAlign: 'center',
+const dishNameStyle: React.CSSProperties = {
+    textAlign: 'center' as 'center', // Type assertion to fix TypeScript error
     fontWeight: 'bold',
     fontSize: '1.5em'
 };
 
-const cardContentStyle = {
+const cardContentStyle: React.CSSProperties = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
     gap: '8px',
 };
 
-const rowStyle = {
+const rowStyle: React.CSSProperties = {
     display: 'contents',
 };
 
-const stepCardStyle = {
+const stepCardStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#222',
@@ -118,18 +127,18 @@ const stepCardStyle = {
     gap: '8px'
 };
 
-const stepStyle = {
+const stepStyle: React.CSSProperties = {
     backgroundColor: '#333',
     padding: '8px',
     borderRadius: '8px'
 };
 
-const imageContainerStyle = {
+const imageContainerStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center'
 };
 
-const imageStyle = {
+const imageStyle: React.CSSProperties = {
     maxWidth: '100%',
     height: 'auto',
     borderRadius: '8px'

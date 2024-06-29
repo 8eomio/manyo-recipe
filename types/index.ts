@@ -24,7 +24,7 @@ export type recipe = {
   optional_ingredients: string;
   author: string;
   all_ingredients: string[];
-  cooking_steps: string;
+  cooking_steps: string[];
   cooking_step_images: string[];
   utensils: string;
   views: number;

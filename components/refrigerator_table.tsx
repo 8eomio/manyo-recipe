@@ -161,7 +161,7 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
                 <TableRow key={refri.id}>
                   <TableCell>{refri.usrid}</TableCell>
                   <TableCell>{refri.ingredient}</TableCell>
-                  <TableCell>{refri.exp_date}</TableCell>
+                  <TableCell>{new Date(refri.exp_date).toLocaleDateString()}</TableCell>
                   <TableCell>
                     <Button
                       color="danger"
@@ -178,7 +178,7 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
   );
 };
 
-const suggestionsStyle = {
+const suggestionsStyle: React.CSSProperties = {
   position: 'absolute',
   background: 'black',
   border: '1px solid #ccc',

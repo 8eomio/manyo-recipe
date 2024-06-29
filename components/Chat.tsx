@@ -75,7 +75,7 @@ const Chat = () => {
     const handleSendMessage = async (message: string) => {
         console.log("handleSendMessage called with message:", message);
         const newChatLog = [...chatLog, { type: 'user', message }];
-        setChatLog(newChatLog);
+        setChatLog(newChatLog as ChatLog[]);
         setUserMsg('');
         setIsLoading(true);
 
@@ -102,7 +102,7 @@ const Chat = () => {
             setIsLoading(false);
             setWaitingForInput(false);
         } else {
-            await requestRecommendations(newContext, newChatLog);
+            await requestRecommendations(newContext, newChatLog as ChatLog[]);
         }
     };
 
@@ -124,8 +124,8 @@ const Chat = () => {
                 const botMessage = response.data.choices[0].message.content;
                 console.log("Bot Message:", botMessage);
 
-                const recommendationList = botMessage.split('\n').filter(text => text.trim() !== "")
-                    .map((text, index) => {
+                const recommendationList = botMessage.split('\n').filter((text:any) => text.trim() !== "")
+                    .map((text:any, index:any) => {
                         try {
                             console.log(`Parsing recommendation: ${text}`);
                             const parts = text.split(' - ');
@@ -137,7 +137,7 @@ const Chat = () => {
 
                             const difficulty = difficultyLine.trim();
                             const cookingTime = timeLine.trim();
-                            const ingredients = ingredientsLine.split(',').map(ingredient => ingredient.trim());
+                            const ingredients = ingredientsLine.split(',').map((ingredient:any) => ingredient.trim());
 
                             return {
                                 text: name.trim(),
@@ -151,10 +151,10 @@ const Chat = () => {
                             return null;
                         }
                     })
-                    .filter(rec => rec !== null);
+                    .filter((rec:any) => rec !== null) as Recommendation[];
 
                 console.log("Recommendations:", recommendationList);
-                setRecommendations(recommendationList as Recommendation[]);
+                setRecommendations(recommendationList);
                 setChatLog([...chatLog, { type: 'bot', message: "추천된 메뉴:" }]);
                 setWaitingForInput(false);
                 setIsRecommending(true);
@@ -205,7 +205,7 @@ const Chat = () => {
 
     const handleButtonClick = async (message: string) => {
         const newChatLog = [...chatLog, { type: 'user', message }];
-        setChatLog(newChatLog);
+        setChatLog(newChatLog as ChatLog[]);
 
         if (message === 'YES' && step !== 4) {
             setWaitingForInput(true);
@@ -224,7 +224,7 @@ const Chat = () => {
         } else if (message === 'YES' && step === 4) {
             setWaitingForInput(true);
         } else if (message === 'NO' && step === 4) {
-            await requestRecommendations(context, newChatLog);
+            await requestRecommendations(context, newChatLog as ChatLog[]);
         }
     };
 
@@ -252,7 +252,7 @@ const Chat = () => {
                 const recipeDetails = botMessage.split('조리 과정:')[0].trim();
                 setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: recipeDetails }]);
 
-                const cookingSteps = botMessage.split('조리 과정:')[1]?.trim().split('\n').filter(step => step.trim() !== "");
+                const cookingSteps = botMessage.split('조리 과정:')[1]?.trim().split('\n').filter((step:any) => step.trim() !== "");
                 if (cookingSteps) {
                     for (const step of cookingSteps) {
                         const translatedStep = await translateToEnglish(step);

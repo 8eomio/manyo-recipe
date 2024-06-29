@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { recipe } from "@/types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faUser, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
     const router = useRouter();
@@ -27,7 +28,7 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
     }, []);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', backgroundColor: '#000', color: '#fff', padding: '16px' }}>
+        <div style={containerStyle}>
             {recipes && recipes.filter((recipe) => recipe.userid.toString() === filterId).map((recipe) => (
                 <div key={recipe.id} style={cardStyle}>
                     <h2 style={titleStyle}>{recipe.title}</h2>
@@ -48,15 +49,15 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
                         <h3 style={dishNameStyle}>{recipe.dish_name}</h3>
                         <div style={detailsContainerStyle}>
                             <div style={detailItemStyle}>
-                                <FontAwesomeIcon icon={faUser} />
+                                <FontAwesomeIcon icon={faUser as IconProp} />
                                 <span style={detailTextStyle}>{recipe.author}</span>
                             </div>
                             <div style={detailItemStyle}>
-                                <FontAwesomeIcon icon={faClock} />
+                                <FontAwesomeIcon icon={faClock as IconProp} />
                                 <span style={detailTextStyle}>{recipe.time} 분</span>
                             </div>
                             <div style={detailItemStyle}>
-                                <FontAwesomeIcon icon={faTachometerAlt} />
+                                <FontAwesomeIcon icon={faTachometerAlt as IconProp} />
                                 <span style={detailTextStyle}>{recipe.difficulty}</span>
                             </div>
                         </div>
@@ -87,7 +88,6 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
                             <div style={ingredientsContainerStyle}>
                                 <strong style={{ marginBottom: '8px' }}>[없어도 되는 재료]:</strong>
                                 <div style={ingredientStyle}>
-                                    
                                     <span style={ingredientQuantityStyle}>{recipe.optional_ingredients}</span>
                                 </div>
                             </div>
@@ -96,7 +96,6 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
                             <div style={ingredientsContainerStyle}>
                                 <strong style={{ marginBottom: '8px' }}>[조리 도구]:</strong>
                                 <div style={ingredientStyle}>
-                                    
                                     <span style={ingredientQuantityStyle}>{recipe.utensils}</span>
                                 </div>
                             </div>
@@ -105,7 +104,6 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
                             <div style={ingredientsContainerStyle}>
                                 <strong style={{ marginBottom: '8px' }}>[조회수]:</strong>
                                 <div style={ingredientStyle}>
-                                   
                                     <span style={ingredientQuantityStyle}>{recipe.views}</span>
                                 </div>
                             </div>
@@ -132,14 +130,23 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
                             </div>
                         </div>
                     ))}
-                    <Button onClick={() => deleteRecipeHandler(recipe.id)} color="error">레시피 삭제</Button>
+                    <Button onClick={() => deleteRecipeHandler(recipe.id)} color="warning">레시피 삭제</Button>
                 </div>
             ))}
         </div>
     );
 };
 
-const cardStyle = {
+const containerStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    backgroundColor: '#000',
+    color: '#fff',
+    padding: '16px'
+};
+
+const cardStyle: React.CSSProperties = {
     padding: '16px',
     border: '1px solid #333',
     borderRadius: '8px',
@@ -150,14 +157,14 @@ const cardStyle = {
     marginBottom: '16px'
 };
 
-const titleStyle = {
+const titleStyle: React.CSSProperties = {
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: '2em',
     marginBottom: '16px',
 };
 
-const cardHeaderStyle = {
+const cardHeaderStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -166,31 +173,31 @@ const cardHeaderStyle = {
     marginBottom: '8px'
 };
 
-const dishNameStyle = {
-    textAlign: 'center',
+const dishNameStyle: React.CSSProperties = {
+    textAlign: 'center' as 'center',
     fontWeight: 'bold',
     fontSize: '1.5em',
     marginTop: '16px'
 };
 
-const cardContentStyle = {
+const cardContentStyle: React.CSSProperties = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
     gap: '8px',
 };
 
-const rowStyle = {
+const rowStyle: React.CSSProperties = {
     display: 'contents',
 };
 
-const ingredientListStyle = {
+const ingredientListStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     marginLeft: '8px',
     textAlign: 'left',
 };
 
-const ingredientStyle = {
+const ingredientStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: '4px',
@@ -198,25 +205,25 @@ const ingredientStyle = {
     borderBottom: '1px solid #444',
 };
 
-const ingredientNameStyle = {
+const ingredientNameStyle: React.CSSProperties = {
     flex: '1 1 auto',
     textAlign: 'left',
     whiteSpace: 'nowrap',
 };
 
-const ingredientSeparatorStyle = {
+const ingredientSeparatorStyle: React.CSSProperties = {
     flex: '1 1 auto',
     borderBottom: '1px dashed #fff',
     margin: '0 8px',
 };
 
-const ingredientQuantityStyle = {
+const ingredientQuantityStyle: React.CSSProperties = {
     flex: '0 0 auto',
     textAlign: 'right',
     whiteSpace: 'nowrap',
 };
 
-const stepCardStyle = {
+const stepCardStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#222',
@@ -226,32 +233,32 @@ const stepCardStyle = {
     gap: '8px'
 };
 
-const stepStyle = {
+const stepStyle: React.CSSProperties = {
     backgroundColor: '#333',
     padding: '8px',
     borderRadius: '8px'
 };
 
-const imageContainerStyle = {
+const imageContainerStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center',
     marginTop: '8px'
 };
 
-const imageStyle = {
+const imageStyle: React.CSSProperties = {
     maxWidth: '100%',
     height: 'auto',
     borderRadius: '8px'
 };
 
-const mainImageStyle = {
+const mainImageStyle: React.CSSProperties = {
     maxWidth: '100%',
     height: 'auto',
     borderRadius: '8px',
     marginTop: '8px'
 };
 
-const detailsContainerStyle = {
+const detailsContainerStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -259,17 +266,17 @@ const detailsContainerStyle = {
     width: '100%',
 };
 
-const detailItemStyle = {
+const detailItemStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
 };
 
-const detailTextStyle = {
+const detailTextStyle: React.CSSProperties = {
     marginLeft: '8px',
 };
 
-const ingredientsContainerStyle = {
+const ingredientsContainerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     marginTop: '8px',

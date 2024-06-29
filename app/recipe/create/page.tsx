@@ -7,7 +7,6 @@ import { recipe } from "@/types";
 export default function CreateRecipePage() {
     const [newRecipe, setNewRecipe] = useState<Partial<recipe>>({
         title: '',
-        required_ingredients: '',
         difficulty: '',
         comments: '',
         dish_name: '',
@@ -37,7 +36,7 @@ export default function CreateRecipePage() {
         const updatedSteps = [...steps];
         if (name === "step") {
             updatedSteps[index] = { ...updatedSteps[index], step: value };
-        } else if (e.target.files) {
+        } else if (e.target instanceof HTMLInputElement && e.target.files) {
             updatedSteps[index] = { ...updatedSteps[index], image: e.target.files[0] };
         }
         setSteps(updatedSteps);
