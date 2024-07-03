@@ -5,12 +5,8 @@ import styles from '../styles/Chat.module.css';
 import OpenAI from 'openai';
 import Image from 'next/image';
 
-<<<<<<< HEAD
-const openai = new OpenAI({ apiKey:`${process.env.OPENAI_API_KEY}`,dangerouslyAllowBrowser: true });
-=======
-const openai = new OpenAI({ apiKey: `${process.env.OPENAI_API_KEY}`, dangerouslyAllowBrowser: true });
 
->>>>>>> 48d37927cd4643a1de6d78ec69fdf9370adad463
+const openai = new OpenAI({ apiKey:`${process.env.OPENAI_API_KEY}`,dangerouslyAllowBrowser: true });
 
 interface ChatLog {
     type: 'user' | 'bot' | 'button';
