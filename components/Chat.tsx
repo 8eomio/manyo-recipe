@@ -593,7 +593,7 @@ const Chat = () => {
     return (
 <div className={styles.chatContainer}>
             <header className={styles.header}>
-                요리마녀 이자밸라
+                요리마녀 이자벨라
                 <Image src="/icon.png" alt="아이콘" width={40} height={40} className={styles.icon} />
             </header>
             <ul className={styles.feed}>
@@ -601,8 +601,8 @@ const Chat = () => {
                     <li key={index} className={`${styles.chat} ${chat.type === 'user' ? styles.user : styles.bot}`}>
                         {chat.type === 'bot' && (
                             <div className={styles.botProfile}>
-                                <img src="/kong3.png" alt="이자밸라" />
-                                <span className={styles.botName}>이자밸라</span>
+                                <img src="/kong3.png" alt="이자벨라" />
+                                <span className={styles.botName}>이자벨라</span>
                             </div>
                         )}
 {/* <div className={styles.messageContainer}>
