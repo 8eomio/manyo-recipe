@@ -132,14 +132,14 @@ const RefriTable = ({ refris }: { refris: refri[] }) => {
           </Button>
         )}
       </div>
-      <div className="flex justify-end mt-4">
+      {/* <div className="flex justify-end mt-4">
         <Button
           onClick={handleExecuteOcr}
           className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           Execute OCR
         </Button>
-      </div>
+      </div> */}
       {ocrOutput && (
         <div className="mt-4 p-4 border border-gray-300 rounded">
           <h2 className="text-xl font-bold">OCR Output</h2>
