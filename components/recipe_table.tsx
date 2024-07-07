@@ -29,7 +29,7 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
 
     return (
         <div style={containerStyle}>
-            {recipes && recipes.filter((recipe) => recipe.userid.toString() === filterId).map((recipe) => (
+            {recipes.map((recipe) => (
                 <div key={recipe.id} style={cardStyle}>
                     <h2 style={titleStyle}>{recipe.title}</h2>
                     {recipe.main_img && (
