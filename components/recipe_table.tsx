@@ -100,14 +100,7 @@ const RecipeTable = ({ recipes }: { recipes: recipe[] }) => {
                                 </div>
                             </div>
                         )}
-                        {recipe.views && (
-                            <div style={ingredientsContainerStyle}>
-                                <strong style={{ marginBottom: '8px' }}>[조회수]:</strong>
-                                <div style={ingredientStyle}>
-                                    <span style={ingredientQuantityStyle}>{recipe.views}</span>
-                                </div>
-                            </div>
-                        )}
+                        
                     </div>
                     {recipe.cooking_steps.map((step, index) => (
                         <div key={index} style={stepCardStyle}>

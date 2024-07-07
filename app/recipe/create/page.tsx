@@ -172,13 +172,7 @@ export default function CreateRecipePage() {
                     onChange={handleChange}
                     className="p-2 border border-gray-300 rounded"
                 />
-                <input
-                    type="number"
-                    name="views"
-                    placeholder="조회수"
-                    onChange={handleChange}
-                    className="p-2 border border-gray-300 rounded"
-                />
+                
                 <button
                     type="submit"
                     className="bg-blue-500 text-white px-4 py-2 rounded"

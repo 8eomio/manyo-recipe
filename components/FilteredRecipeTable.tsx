@@ -42,7 +42,7 @@ const FilteredRecipeTable = ({ recipes, searchTerm }: { recipes: recipe[], searc
                         <div style={rowStyle}><strong>없어도 되는 재료:</strong> <span>{recipe.optional_ingredients}</span></div>
                         <div style={rowStyle}><strong>전체 재료:</strong> <span>{recipe.all_ingredients.join(', ')}</span></div>
                         <div style={rowStyle}><strong>조리 도구:</strong> <span>{recipe.utensils}</span></div>
-                        <div style={rowStyle}><strong>조회수:</strong> <span>{recipe.views}</span></div>
+                       
                     </div>
                     {recipe.cooking_steps.map((step, index) => (
                         <div key={index} style={stepCardStyle}>
